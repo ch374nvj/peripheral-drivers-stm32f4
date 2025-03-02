@@ -2,7 +2,7 @@
  * stm32f411xx_gpio_driver.c
  *
  *  Created on: Feb 13, 2025
- *      Author: ch41c1d
+ *      Author: Chetan
  */
 
 #include "stm32f411xx_gpio_driver.h"

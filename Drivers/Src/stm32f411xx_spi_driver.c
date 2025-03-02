@@ -36,9 +36,44 @@ void SPI_PClockControl(SPI_RegDef_t *pSPIx, uint8_t Enable) {
 }
 
 void SPI_Init(SPI_Handle_t *pSPIHandle) {
+    uint32_t tempCR1 = 0x00; // Temporary variable for setting control register
 
+    // Setting Device Mode
+    uint8_t deviceMode = pSPIHandle->SPIConfig.SPI_DeviceMode;
+    tempCR1 |= (deviceMode<<2);
+
+    if(pSPIHandle->SPIConfig.SPI_BusConfig == FULL_DUPLEX) {
+        tempCR1 &= ~(1<<SPI_CR1_BIDIMODE); 
+    }
+    else if (pSPIHandle->SPIConfig.SPI_BusConfig == HALF_DUPLEX) {
+        tempCR1 |=  (1<<SPI_CR1_BIDIMODE);
+    }
+    else {
+        tempCR1 &= ~(1<<SPI_CR1_BIDIMODE);
+        tempCR1 |=  (1<<SPI_CR1_RXONLY);
+    }
+
+    // SCK Prescaler setting
+    // tempCR1 &= ~(0x7 << BR); // Clear the BR bits before setting the required value in next line.
+    tempCR1 |=  (pSPIHandle->SPIConfig.SPI_SclkSpeed << SPI_CR1_BR);
+
+    // CPOL, CPHA & SSM setting
+    // tempCR1 &= ~(1 <<CPOL);
+    tempCR1 |=  (pSPIHandle->SPIConfig.SPI_CPOL << SPI_CR1_CPOL);
+
+    // tempCR1 &= ~(1<<CPHA);
+    tempCR1 |=  (pSPIHandle->SPIConfig.SPI_CPHA << SPI_CR1_CPHA);
+
+    // tempCR1 &= ~(1<<SSM);
+    tempCR1 |=  (pSPIHandle->SPIConfig.SPI_SSM << SPI_CR1_SSM);
+
+    pSPIHandle->pSPIx->CR[0] = tempCR1;
+
+    /* Note: Clearing bit field isn't necessary when you are setting these bits into a
+        temp variable.
+    */
 }
 
-void SPI_DeInit(SPI_RegDef_t *pSPIx){
+void SPI_DeInit(SPI_RegDef_t *pSPIx) {
 
 }

@@ -44,10 +44,10 @@ typedef struct {
 // BIDIMODE Bit; 0 => FD, 1 => HD
 // BIDIOE   Bit, with BIDIMODE == 1; 0 => Rx-only mode (o/p disabled), 1 => Tx-only mode (o/p enabled)
 // IF BIDIMODE == 0, BIDIOE = X
+// IF RXONLY == 1, SIMPLEX_RXONLY Mode 
 #define FULL_DUPLEX     0
 #define HALF_DUPLEX     1
-#define SIMPLEX_TXONLY  2
-#define SIMPLEX_RXONLY  3
+#define SIMPLEX_RXONLY  2
 
 // @SPI_SclkSpeed
 // Used in the BR register to adjust(prescale) the baud rate wrt Peripheral CLK (PCLK)
@@ -62,6 +62,7 @@ typedef struct {
 
 // @SPI_DFF
 // Data Frame Format
+// DFF Bit in CR1
 #define DFF_8BITS       0
 #define DFF_16BITS      1
 
@@ -77,8 +78,42 @@ typedef struct {
 
 // @SPI_SSM
 // Slave Select Mgmt
-#define SPI_SSM_SW      0
-#define SPI_SSM_HW      1
+#define SPI_SSM_DI      0
+#define SPI_SSM_EN      1
+
+// SPI_CR1 Register Bit Positions
+#define SPI_CR1_BIDIMODE        15
+#define SPI_CR1_BIDIOE          14
+#define SPI_CR1_CRCEN           13
+#define SPI_CR1_CRCNEXT         12
+#define SPI_CR1_DFF             11
+#define SPI_CR1_RXONLY          10
+#define SPI_CR1_SSM             9
+#define SPI_CR1_SPE             6
+#define SPI_CR1_BR              3
+#define SPI_CR1_MSTR            2
+#define SPI_CR1_CPOL            1
+#define SPI_CR1_CPHA            0
+
+// SPI_CR2 Register Bit Positions
+#define SPI_CR2_RXDMAEN         0
+#define SPI_CR2_TXDMAEN         1
+#define SPI_CR2_SSOE            2
+#define SPI_CR2_FRF             4
+#define SPI_CR2_ERRIE           5
+#define SPI_CR2_RXNEIE          6
+#define SPI_CR2_TXEIE           7
+
+// SPI_SR Register Bit Positions
+#define SPI_SR_RXNE                    0
+#define SPI_SR_TXE                     1
+#define SPI_SR_CHSIDE                  2                
+#define SPI_SR_UDR                     3        
+#define SPI_SR_CRCERR                  4            
+#define SPI_SR_MODF                    5            
+#define SPI_SR_OVR                     6        
+#define SPI_SR_BSY                     7        
+#define SPI_SR_FRE                     8
 
 /* =================== *
 *   API Prototypes     *
