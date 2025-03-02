@@ -156,7 +156,7 @@ typedef struct {
 
 // SPI
 typedef struct {
-    __vou CR1;
+    __vou CR[2]; // CR[0] -> CR1, CR[1] -> CR2
     __vou SR;
     __vou DR;
     __vou CRCPR;
@@ -200,7 +200,7 @@ typedef struct {
 // EXTI
 #define EXTI                ((EXTI_RegDef_t*)EXTI_BASEADDR)
 
-// GPIO 
+// GPIO (@pGPIOx)
 #define GPIOA               ((GPIO_RegDef_t*)GPIOA_BASEADDR)
 #define GPIOB               ((GPIO_RegDef_t*)GPIOB_BASEADDR)
 #define GPIOC               ((GPIO_RegDef_t*)GPIOC_BASEADDR)
@@ -213,7 +213,7 @@ typedef struct {
 #define I2C2                ((I2C_RegDef_t*)I2C2_BASEADDR)
 #define I2C3                ((I2C_RegDef_t*)I2C3_BASEADDR)
 
-// SPI
+// SPI (@pSPIx)
 #define SPI1                ((SPI_RegDef_t*)SPI1_BASEADDR)
 #define SPI2                ((SPI_RegDef_t*)SPI2_BASEADDR)
 #define SPI3                ((SPI_RegDef_t*)SPI3_BASEADDR)
@@ -304,6 +304,11 @@ typedef struct {
                                 (x==GPIOE)? 4: \
                                 (x==GPIOH)? 7: 0
 
+// 
+// SPIx Reset Macros
+// 
+#define SPI1_REG_RESET()    do{ }
+
 // IRQ Number Macros
 // Postion = IRQ Number (Ref Manual: Vector table)
 #define IRQ_EXTI0           6
@@ -319,5 +324,8 @@ typedef struct {
 #define DISABLE             0
 #define SET                 ENABLE
 #define RESET               DISABLE
+
+// #include "stm32f411xx_gpio_driver.h"
+// #include "stm32f411xx_spi_driver.h"
 
 #endif /* STM32F411XX_H_ */
