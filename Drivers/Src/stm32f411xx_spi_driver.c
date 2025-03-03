@@ -75,5 +75,43 @@ void SPI_Init(SPI_Handle_t *pSPIHandle) {
 }
 
 void SPI_DeInit(SPI_RegDef_t *pSPIx) {
+    if(pSPIx==SPI1)
+        SPI1_REG_RESET();
+    if(pSPIx==SPI2)
+        SPI2_REG_RESET();
+    if(pSPIx==SPI3)
+        SPI3_REG_RESET();
+    if(pSPIx==SPI4)
+        SPI4_REG_RESET();
+    if(pSPIx==SPI5)
+        SPI5_REG_RESET();
+}
 
+uint8_t SPI_GetBitStatus(SPI_RegDef_t *pSPIx, uint32_t BitName) {
+    if (pSPIx->SR & (1<<BitName))
+        return SET;
+    else
+        return RESET;
+}
+
+void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len) {
+    while (Len > 0) {
+        // while(!(pSPIx->SR & (1<<SPI_SR_TXE))); 
+        // Above expression is a polling (blocking) call,
+        // Whose equivalent is given below
+        while(SPI_GetBitStatus(pSPIx, SPI_SR_TXE) == RESET); // Wait until Tx Buffer is empty (i.e. until TXE = 1)
+
+        if(pSPIx->CR[0] & (1<<SPI_CR1_DFF)) { // 16 bit DFF?
+            pSPIx->DR = *((uint16_t*)pTxBuffer); // Load data into DFF 
+            Len = Len - 2;
+            (uint16_t*)pTxBuffer++; // Increment addr of Tx Buffer
+        }
+        else {
+            pSPIx->DR = *pTxBuffer;
+            Len--;
+            pTxBuffer++;
+        }
+
+    }
+    
 }

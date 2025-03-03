@@ -136,10 +136,17 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx);
 
 // GPIO Data Read and Write APIs
 
+/// @brief A wrapper to access and read the status bits from the SPI_SR Reg
+/// @param pSPIx 
+/// @param BitName 
+/// @return SET/RESET (int 1/0)
+uint8_t SPI_GetBitStatus(SPI_RegDef_t *pSPIx, uint32_t BitName);
+
 /// @brief SPI Send (output)
 /// @param pSPIx pointer to base address of SPI peripheral in use
 /// @param pTxBuffer Pointer to Tx Buffer
-/// @param Len Length (Size) of Tx data
+/// @param Len Length (Size) of Tx data in bytes
+/// @note A blocking API, i.e., waits until all bytes in the buffer are sent.
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len);
 
 /// @brief SPI Receive (input)
@@ -148,10 +155,10 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len);
 /// @param Len Length (Size) of Rx data
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len);
 
-// IRQ Configuration and ISR Handling
-// Following APIs deal at the processor side of MCU. So the stmts are processor specific.
-// By processor side; it means we need to fiddle with the M4 processor's internal SFRs (Datasheet: Memory mapping)
-// We would need to refer the Cortex-M4 processor's generic user guide to be able to write the API 
+/// @note  Configuration and ISR Handling:
+/// Following APIs deal at the processor side of MCU. So the stmts are processor specific.
+/// By processor side; it means we need to fiddle with the M4 processor's internal SFRs (Datasheet: Memory mapping)
+/// We would need to refer the Cortex-M4 processor's generic user guide to be able to write the API 
 
 /// @brief API for IRQ Interrupt Enable
 /// @param IRQNumber 
