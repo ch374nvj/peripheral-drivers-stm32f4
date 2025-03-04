@@ -36,16 +36,19 @@ void SPI_PClockControl(SPI_RegDef_t *pSPIx, uint8_t Enable) {
 }
 
 void SPI_Init(SPI_Handle_t *pSPIHandle) {
+    // Enable Peripheral Clock
+    SPI_PClockControl(pSPIHandle->pSPIx, ENABLE);
+
     uint32_t tempCR1 = 0x00; // Temporary variable for setting control register
 
     // Setting Device Mode
     uint8_t deviceMode = pSPIHandle->SPIConfig.SPI_DeviceMode;
     tempCR1 |= (deviceMode<<2);
 
-    if(pSPIHandle->SPIConfig.SPI_BusConfig == FULL_DUPLEX) {
+    if(pSPIHandle->SPIConfig.SPI_BusConfig == SPI_FULL_DUPLEX) {
         tempCR1 &= ~(1<<SPI_CR1_BIDIMODE); 
     }
-    else if (pSPIHandle->SPIConfig.SPI_BusConfig == HALF_DUPLEX) {
+    else if (pSPIHandle->SPIConfig.SPI_BusConfig == SPI_HALF_DUPLEX) {
         tempCR1 |=  (1<<SPI_CR1_BIDIMODE);
     }
     else {

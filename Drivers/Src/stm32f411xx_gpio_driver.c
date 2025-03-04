@@ -40,6 +40,8 @@ void GPIO_PClockControl(GPIO_RegDef_t *pGPIOx, uint8_t Enable){
 
 
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
+    // Peripheral Clock Enable
+    GPIO_PClockControl(pGPIOHandle->pGPIOx, ENABLE);
     // Mode Config
     uint8_t pinNumber = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber;
     uint8_t pinMode   = pGPIOHandle->GPIO_PinConfig.GPIO_PinMode;
