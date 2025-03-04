@@ -134,13 +134,12 @@ void SPI_Init(SPI_Handle_t *pSPIHandle);
 /// @param pSPIx 
 void SPI_DeInit(SPI_RegDef_t *pSPIx);
 
-// GPIO Data Read and Write APIs
+/// @brief Sets/Resets the SPE Bit in Control register to Enable/Disable the SPI Peripheral 
+/// @param pSPIx
+/// @param Enable Enable or Disable the peripheral
+void SPI_PeripheralEnable(SPI_RegDef_t *pSPIx, uint8_t Enable);
 
-/// @brief A wrapper to access and read the status bits from the SPI_SR Reg
-/// @param pSPIx 
-/// @param BitName 
-/// @return SET/RESET (int 1/0)
-uint8_t SPI_GetBitStatus(SPI_RegDef_t *pSPIx, uint32_t BitName);
+// GPIO Data Read and Write APIs
 
 /// @brief SPI Send (output)
 /// @param pSPIx pointer to base address of SPI peripheral in use
@@ -173,5 +172,19 @@ void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority);
 /// @brief This api clears the bit in exti pending reg (PR) corresp to pin number
 /// @param PinNumber 
 void SPI_ISRHandling(uint8_t PinNumber);
+
+// Misc APIs
+
+/// @brief A wrapper to access and read the status bits from the SPI_SR Reg
+/// @param pSPIx 
+/// @param BitName 
+/// @return SET/RESET (int 1/0)
+uint8_t SPI_GetBitStatus(SPI_RegDef_t *pSPIx, uint32_t BitName);
+
+/// @brief Sets/Resets the SSI Bit in Control register 
+/// @param pSPIx
+/// @param Set Set or reset the bit
+/// @note Reference Manual 20.3.10
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t Set);
 
 #endif /* STM32F411XX_SPI_DRIVER_H_ */

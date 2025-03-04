@@ -53,6 +53,9 @@ void SPI1_Inits(void) {
     SPI1handle.SPIConfig.SPI_SSM = ENABLE;
 
     SPI_Init(&SPI1handle);
+    
+    SPI_PeripheralEnable(SPI1, ENABLE);
+    SPI_SSIConfig(SPI1, ENABLE);
 }
 
 int main(void) {
@@ -62,6 +65,8 @@ int main(void) {
     SPI1_Inits();
 
     SPI_SendData(SPI2, (uint8_t*)tx_data, strlen(tx_data));
+
+    SPI_PeripheralEnable(SPI1, DISABLE);
 
     while(1);
 

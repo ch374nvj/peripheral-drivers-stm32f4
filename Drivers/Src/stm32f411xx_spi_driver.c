@@ -90,6 +90,17 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
         SPI5_REG_RESET();
 }
 
+void SPI_PeripheralEnable(SPI_RegDef_t *pSPIx, uint8_t Enable) {
+    if (Enable)
+        pSPIx->CR[0] |= (1<<SPI_CR1_SPE);
+    else
+        pSPIx->CR[0] &= ~(1<<SPI_CR1_SPE);
+}
+
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t Enable){
+    
+}
+
 uint8_t SPI_GetBitStatus(SPI_RegDef_t *pSPIx, uint32_t BitName) {
     if (pSPIx->SR & (1<<BitName))
         return SET;
