@@ -37,34 +37,34 @@ typedef struct {
 
 // @SPI_DeviceMode
 // CR1 MSTR Bit
-#define SLAVE   0
-#define MASTER  1
+#define SPI_SLAVE   0
+#define SPI_MASTER  1
 
 // @SPI_BusConfig
 // BIDIMODE Bit; 0 => FD, 1 => HD
 // BIDIOE   Bit, with BIDIMODE == 1; 0 => Rx-only mode (o/p disabled), 1 => Tx-only mode (o/p enabled)
 // IF BIDIMODE == 0, BIDIOE = X
 // IF RXONLY == 1, SIMPLEX_RXONLY Mode 
-#define FULL_DUPLEX     0
-#define HALF_DUPLEX     1
-#define SIMPLEX_RXONLY  2
+#define SPI_FULL_DUPLEX     0
+#define SPI_HALF_DUPLEX     1
+#define SPI_SIMPLEX_RXONLY  2
 
 // @SPI_SclkSpeed
 // Used in the BR register to adjust(prescale) the baud rate wrt Peripheral CLK (PCLK)
-#define PCLK_DIV2       0
-#define PCLK_DIV4       1
-#define PCLK_DIV8       2
-#define PCLK_DIV16      3
-#define PCLK_DIV32      4
-#define PCLK_DIV64      5
-#define PCLK_DIV128     6
-#define PCLK_DIV256     7
+#define SPI_PCLK_DIV2       0
+#define SPI_PCLK_DIV4       1
+#define SPI_PCLK_DIV8       2
+#define SPI_PCLK_DIV16      3
+#define SPI_PCLK_DIV32      4
+#define SPI_PCLK_DIV64      5
+#define SPI_PCLK_DIV128     6
+#define SPI_PCLK_DIV256     7
 
 // @SPI_DFF
 // Data Frame Format
 // DFF Bit in CR1
-#define DFF_8BITS       0
-#define DFF_16BITS      1
+#define SPI_DFF_8BITS       0
+#define SPI_DFF_16BITS      1
 
 // @SPI_CPOL
 // Clock polarity
