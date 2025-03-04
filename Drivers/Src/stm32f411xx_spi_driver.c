@@ -97,8 +97,18 @@ void SPI_PeripheralEnable(SPI_RegDef_t *pSPIx, uint8_t Enable) {
         pSPIx->CR[0] &= ~(1<<SPI_CR1_SPE);
 }
 
-void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t Enable){
-    
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t Set){
+    if (Set == ENABLE)
+        pSPIx->CR[0] |= (1<<SPI_CR1_SSI);
+    else
+        pSPIx->CR[0] &= ~(1<<SPI_CR1_SSI);
+}
+
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t Set) {
+    if (Set == ENABLE)
+        pSPIx->CR[1] |= (1<<SPI_CR2_SSOE);
+    else
+        pSPIx->CR[1] &= ~(1<<SPI_CR2_SSOE);
 }
 
 uint8_t SPI_GetBitStatus(SPI_RegDef_t *pSPIx, uint32_t BitName) {
@@ -116,7 +126,7 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len) {
         while(SPI_GetBitStatus(pSPIx, SPI_SR_TXE) == RESET); // Wait until Tx Buffer is empty (i.e. until TXE = 1)
 
         if(pSPIx->CR[0] & (1<<SPI_CR1_DFF)) { // 16 bit DFF?
-            pSPIx->DR = *((uint16_t*)pTxBuffer); // Load data into DFF 
+            pSPIx->DR = *((uint16_t*)pTxBuffer); // Load data into DR 
             Len = Len - 2;
             (uint16_t*)pTxBuffer++; // Increment addr of Tx Buffer
         }
@@ -125,7 +135,22 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len) {
             Len--;
             pTxBuffer++;
         }
-
     }
-    
+}
+
+void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len) {
+    while(Len > 0) {
+        while(SPI_GetBitStatus(pSPIx, SPI_SR_RXNE) == RESET); // Wait until Rx Buffer is not empty (i.e. until RXNE = 1)
+
+        if(pSPIx->CR[0] & (1<<SPI_CR1_DFF)) { // 16 bit DFF?
+            *((uint16_t*)pRxBuffer) = pSPIx->DR; // Load data from DR to RX Buffer
+            Len = Len - 2;
+            (uint16_t*)pRxBuffer++; // Increment addr of Tx Buffer
+        }
+        else {
+            *pRxBuffer = pSPIx->DR;
+            Len--;
+            pRxBuffer++;
+        }
+    }
 }

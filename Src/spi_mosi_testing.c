@@ -54,16 +54,17 @@ void SPI1_Inits(void) {
 
     SPI_Init(&SPI1handle);
     
-    SPI_PeripheralEnable(SPI1, ENABLE);
     SPI_SSIConfig(SPI1, ENABLE);
 }
 
 int main(void) {
     char tx_data[] = "SPI MOSI Testing";
 
-    SPI1_GPIOInits();
-    SPI1_Inits();
+    SPI1_GPIOInits(); // Func to init GPIO pins and set AF to behave as SPI1 Pins
+    SPI1_Inits();     // Func to init SPI1 peripheral
+    SPI_SSOEConfig(SPI1, ENABLE);
 
+    SPI_PeripheralEnable(SPI1, ENABLE);
     SPI_SendData(SPI2, (uint8_t*)tx_data, strlen(tx_data));
 
     SPI_PeripheralEnable(SPI1, DISABLE);

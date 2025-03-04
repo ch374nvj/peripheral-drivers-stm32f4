@@ -88,6 +88,7 @@ typedef struct {
 #define SPI_CR1_CRCNEXT         12
 #define SPI_CR1_DFF             11
 #define SPI_CR1_RXONLY          10
+#define SPI_CR1_SSI             8
 #define SPI_CR1_SSM             9
 #define SPI_CR1_SPE             6
 #define SPI_CR1_BR              3
@@ -186,5 +187,12 @@ uint8_t SPI_GetBitStatus(SPI_RegDef_t *pSPIx, uint32_t BitName);
 /// @param Set Set or reset the bit
 /// @note Reference Manual 20.3.10
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t Set);
+
+/// @brief Sets/Resets the SSOE Bit in Control register
+/// @param pSPIx 
+/// @param Set Set or reset the bit
+/// @note Reference Manual 20.3.1: Slave select (NSS) pin management.
+///       Setting SSOE will enable NSS output
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t Set);
 
 #endif /* STM32F411XX_SPI_DRIVER_H_ */
